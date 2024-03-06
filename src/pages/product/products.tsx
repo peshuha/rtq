@@ -1,11 +1,9 @@
 import styles from "./products.module.css"
 import {useGetproductsQuery} from "../../api/product/product-api.tsx";
-import {trace} from "../../trace/trace.tsx";
 
 export function Products() {
     const {data, isLoading, isSuccess, error} = useGetproductsQuery()
 
-    trace("page Products")
     if (error) {
         return <div>{error.error}</div>
     }

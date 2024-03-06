@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {ProductToken} from "./product-token.tsx";
 import {TProduct, TUserLogin} from "./product-class.tsx";
-import {authPath} from "../../App.tsx";
+import {authPath, in_auth} from "../../App.tsx";
 import {trace} from "../../trace/trace.tsx";
 
 
@@ -11,17 +11,14 @@ export const productApi = createApi({
         baseUrl: "http://localhost:3001/",
         prepareHeaders: headers => {
             const token = ProductToken().GetToken()
-            trace("productApi:token")
-            trace(token)
-            console.log(`used token ${token}`)
             if (token) {
-                console.log(`token is not null`)
+                console.log(`use token ${token}`)
                 headers.set('Set-Cookie', `MyToken ${token}`)
-                console.log(headers)
             }
             else {
-                console.log("navigate to auth")
-                document.location.href = authPath
+                if(!ProductToken().IsAuth()) {
+                    document.location.href = authPath
+                }
             }
             return headers
         }

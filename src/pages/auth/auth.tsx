@@ -9,30 +9,31 @@ export function Auth() {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     const [errmsg, setErrMsg] = useState('')
+    // const [answer, setAnswer] = useState("")
     const [authorize, {isSuccess, error, isLoading}] = useAuthorizeMutation()
     const navigate = useNavigate()
 
-
     const auth = async () => {
+        setErrMsg("")
+        const slogin = login
+        const spassword = password
+        setLogin("")
+        setPassword("")
+        ProductToken().InAuth()
+        const answer = await authorize({login: slogin, password: spassword})
+        ProductToken().OutAuth()
         try{
-            setErrMsg("")
-            const answer = await authorize({login, password})
             if(!answer || !answer?.data[0]) {
                 throw new Error("Wrong authorize or password")
             }
             const token = answer.data[0].token
-            trace("token1")
             ProductToken().SetToken(token)
-            console.log("token:", ProductToken().GetToken())
-            navigate("/index")
-            trace("token2")
+            navigate("/product")
         }
         catch(err) {
             console.error("error", err)
             setErrMsg(err)
         }
-        setLogin("")
-        setPassword("")
     }
 
     return <div>

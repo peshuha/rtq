@@ -18,9 +18,6 @@ export let authPath: string = ""
 
 function App() {
 
-    // Сбрасываем токен
-    // ProductToken().Reset()
-
     // Адрес аутификации products
     const auth = router.routes.filter((item) => (
         item?.element?.type?.name === "Auth"
